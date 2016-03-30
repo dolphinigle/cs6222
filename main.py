@@ -7,21 +7,12 @@ Created on Mar 30, 2016
 import os.path
 import parser
 
+from constants import TESTDATA_FOLDER, TUMOR_INPUT_FILENAME, NORMAL_INPUT_FILENAME, RESULT_FILENAMES, \
+  TRUTH_FILENAME
 from engine import TestData
 import engine
 import eval_lib
 
-
-RESULT_FILENAMES = ['{0}_freebayes.vcf',
-                    '{0}_mutect.vcf',
-                    '{0}_vardict.vcf',
-                    '{0}_varscan.vcf']
-
-TRUTH_FILENAME = '{0}_truth.bed'
-
-NORMAL_INPUT_FILENAME = '{0}_normal.bam'
-TUMOR_INPUT_FILENAME = '{0}_tumor.bam'
-TESTDATA_FOLDER = 'testdata'
 
 def Run(classifier_class, sample_folders, test_folders):
   print 'Preprocessing sample datas {0}...'.format(sample_folders)
@@ -56,7 +47,7 @@ def Run(classifier_class, sample_folders, test_folders):
                                truth))
 
   print 'Building {0} from {1}...'.format(classifier_class.__name__, sample_folders)
-  classifier = classifier_class(test_datas)
+  classifier = classifier_class(sample_datas)
   print 'Classifier constructed.'
 
   for test_data, test_folder in zip(test_datas, test_folders):
@@ -69,7 +60,9 @@ def Run(classifier_class, sample_folders, test_folders):
 
 
 if __name__ == '__main__':
-  Run(engine.NaiveLearner, ['syn1'], ['syn1'])
+  # Run(engine.NaiveLearner, ['syn1'], ['syn1'])
+  # Run(engine.DecisionTreeLearner, ['syn1', 'syn2', 'syn3', 'syn4', 'syn5'], ['real1'])
+  Run(engine.DecisionTreeLearner, ['real1'], ['syn1', 'syn2', 'syn3', 'syn4', 'syn5'])
 
 
 
